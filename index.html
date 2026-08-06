@@ -8,7 +8,7 @@ window.addEventListener(
     const dtaChatApi = event.detail;
 
     dtaChatApi.addHeaders({
-      ['x-dta-api-key']: 'sk-z5KYcrUeLe9vHtQ-xqTgAmltN1-6JodZgu-HQv11DLIo7pNj',
+      ['x-dta-api-key']: 'sk-swMMI0nEzTIDV47-eaBDRlhIfb-DdevfFY-ohOLaLKJMyC6Q',
       ['x-dta-project']: 'pep-gestao',
     });
     dtaChatApi.config(getConfig());
@@ -17,7 +17,7 @@ window.addEventListener(
 );
 
 function getConfig() {
-  const baseUrl = 'https://totvs.dta.totvs.ai/api/agents/projects/pep-gestao/agents/06a73735-17c1-7969-8000-2698d8dd38b7/run';
+  const baseUrl = 'https://totvs.dta.totvs.ai/shared/#/public/pep-gestao/agents/06a73735-17c1-7969-8000-2698d8dd38b7';
 
   return {
     apiInit: {
