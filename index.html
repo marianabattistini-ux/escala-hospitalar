@@ -1,56 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Escala Hospitalar</title>
-</head>
-<body>
+<dta-chat label="LYNN"></dta-chat>
+<dta-chat-anchor size="22"></dta-chat-anchor>
 
-  <!-- 1. Painel do chat -->
-  <dta-chat label="LYNN"></dta-chat>
+<script>
+window.addEventListener(
+  'dta-chat-ready',
+  (event) => {
+    const dtaChatApi = event.detail;
 
-  <!-- 2. Botão flutuante -->
-  <dta-chat-anchor size="22"></dta-chat-anchor>
+    dtaChatApi.addHeaders({
+      ['x-dta-api-key']: 'sk-z5KYcrUeLe9vHtQ-xqTgAmltN1-6JodZgu-HQv11DLIo7pNj',
+      ['x-dta-project']: 'pep-gestao',
+    });
+    dtaChatApi.config(getConfig());
+  },
+  {once: true},
+);
 
-  <!-- 3. Configuração -->
-  <script>
-    window.addEventListener(
-      'dta-chat-ready',
-      (event) => {
-        const dtaChatApi = event.detail;
+function getConfig() {
+  const baseUrl = 'https://totvs.dta.totvs.ai/api/agents/projects/pep-gestao/agents/06a73735-17c1-7969-8000-2698d8dd38b7/run';
 
-        dtaChatApi.addHeaders({
-          ['x-dta-project']: 'pep-gestao',
-          ['x-dta-api-key']: 'sk-z5KYcrUeLe9vHtQ-xqTgAmltN1-6JodZgu-HQv11DLIo7pNj',
-        });
-        dtaChatApi.config(getConfig());
-      },
-      { once: true },
-    );
-
-    function getConfig() {
-      const baseUrl = 'https://totvs.dta.totvs.ai/api/agents/projects/pep-gestao/agents/06a73735-17c1-7969-8000-2698d8dd38b7';
-
-      return {
-        apiInit: {
-          url: baseUrl + '/run',
-          sendHeaders: ['x-dta-project', 'x-dta-api-key'],
-        },
-        apiMessage: {
-          url: baseUrl + '/run',
-          method: 'POST',
-          sendHeaders: ['x-dta-project', 'x-dta-api-key'],
-        },
-        header_session_prefix: null,
-        header_thread_prefix: null,
-        header_session: 'x-dta-session-id',
-        header_thread: 'x-dta-trace-id',
-      };
-    }
-  </script>
-
-  <!-- 4. Carrega o widget via CDN -->
-  <script defer src="https://assets.dta.totvs.ai/client/stable/dta_chat.js"></script>
-
-</body>
-</html>
+  return {
+    apiInit: {
+      url: baseUrl,
+      sendHeaders: ['x-dta-api-key', 'x-dta-project'],
+    },
+    apiMessage: {
+      url: baseUrl,
+      method: 'POST',
+      sendHeaders: ['x-dta-api-key', 'x-dta-project'],
+    },
+    header_session_prefix: null,
+    header_thread_prefix: null,
+    header_session: 'x-dta-session-id',
+    header_thread: 'x-dta-trace-id',
+  };
+}
+</script>
+<script defer src="https://assets.dta.totvs.ai/client/stable/dta_chat.js"></script>
