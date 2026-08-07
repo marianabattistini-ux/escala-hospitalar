@@ -1,40 +1,57 @@
-<dta-chat label="LYNN"></dta-chat>
-<dta-chat-anchor size="22"></dta-chat-anchor>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marcação de Folgas</title>
+</head>
+<body>
 
+  <!-- 1. Componentes do Widget -->
+  <dta-chat label="Marcação de Folgas"></dta-chat>
+  <dta-chat-anchor size="32"></dta-chat-anchor>
 
-<script>
-window.addEventListener(
-  'dta-chat-ready',
-  (event) => {
-    const dtaChatApi = event.detail;
+  <!-- 2. Configuração -->
+  <script>
+    const dtaConfig = {
+      tenant:  'pep-gestao',    // ex: pep-gestao
+      agentId: '06a73735-17c1-7969-8000-2698d8dd38b7', // ID do agente no Lynn Builder
+      apiKey:  'sk-TgyqPxqjL3mJM3w-xaaGw6Fspr-z5iRshE-8IRcJClVIycs5',   // chave de compartilhamento
+    };
 
-    dtaChatApi.addHeaders({
-      ['x-dta-api-key']: 'sk-swMMI0nEzTIDV47-eaBDRlhIfb-DdevfFY-ohOLaLKJMyC6Q',
-      ['x-dta-project']: 'pep-gestao',
-    });
-    dtaChatApi.config(getConfig());
-  },
-  {once: true},
-);
+    window.addEventListener('dta-chat-ready', (event) => {
+      const dtaChatApi = event.detail;
 
-function getConfig() {
-  const baseUrl = 'https://totvs.dta.totvs.ai/shared/#/public/pep-gestao/agents/06a73735-17c1-7969-8000-2698d8dd38b7?apiKey=sk-swMMI0nEzTIDV47-eaBDRlhIfb-DdevfFY-ohOLaLKJMyC6Q';
+      // Headers de autenticação
+      dtaChatApi.addHeaders({
+        'x-dta-project': dtaConfig.tenant,
+        'x-dta-api-key': dtaConfig.apiKey,
+      });
 
-  return {
-    apiInit: {
-      url: baseUrl,
-      sendHeaders: ['x-dta-api-key', 'x-dta-project'],
-    },
-    apiMessage: {
-      url: baseUrl,
-      method: 'POST',
-      sendHeaders: ['x-dta-api-key', 'x-dta-project'],
-    },
-    header_session_prefix: null,
-    header_thread_prefix: null,
-    header_session: 'x-dta-session-id',
-    header_thread: 'x-dta-trace-id',
-  };
-}
-</script>
-<script defer src="https://assets.dta.totvs.ai/client/stable/dta_chat.js"></script>
+      // URL base — sem /run duplicado
+      const baseUrl = `https://totvs.dta.totvs.ai/api/agents/projects/${dtaConfig.tenant}/agents/${dtaConfig.agentId}/run`;
+
+      dtaChatApi.config({
+        apiInit: {
+          url: baseUrl,                              // sem + '/run'
+          sendHeaders: ['x-dta-project', 'x-dta-api-key'],
+        },
+        apiMessage: {
+          url: baseUrl,                              // sem + '/run'
+          method: 'POST',
+          sendHeaders: ['x-dta-project', 'x-dta-api-key'],
+        },
+        header_session_prefix: null,
+        header_thread_prefix:  null,
+        header_session: 'x-dta-session-id',
+        header_thread:  'x-dta-trace-id',
+      });
+
+    }, { once: true });
+  </script>
+
+  <!-- 3. CDN do Widget — defer garante que o DOM já existe -->
+  <script defer src="https://assets.dta.totvs.ai/client/stable/dta_chat.js"></script>
+
+</body>
+</html>
